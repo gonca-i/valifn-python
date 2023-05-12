@@ -20,11 +20,12 @@ from datetime import datetime, timedelta
 import time
 import site
 site.addsitedir('script_code/') # Required to import other files in script
+from .settings import Username, Password # Required to User Secrets defined at Settings
 
 VALISPACE = {
     'domain': 'https://.valispace.com/',
-    'username': '',
-    'password': ''
+    'username': Username,
+    'password': Password
 }
 
 DEFAULT_VALUES = {
@@ -39,12 +40,10 @@ def main(**kwargs):
             url = VALISPACE.get('domain'),
             username = VALISPACE.get('username'),
             password = VALISPACE.get('password')
-            #warn_https=False
         )
     DEFAULT_VALUES["start_date"] = api.get('project/'+str(DEFAULT_VALUES["project"]))['start_date']
     DEFAULT_VALUES["today_date"] = datetime.now().strftime("%Y-%m-%d")
     print (DEFAULT_VALUES["today_date"])
-    time.sleep(60)
     print(kwargs)
 
     pass
