@@ -24,6 +24,7 @@ import getpass #used for running in desktop IDE
 import requests
 import site
 site.addsitedir('script_code/') # Required to import other files in script
+from .settings import Username, Password # Required to User Secrets defined at Settings
 
 # Installed packages
 from ast import Str
@@ -52,8 +53,8 @@ CURRENT_SPECIFICATION = {
 
 VALISPACE = {
     'domain': 'https://.valispace.com/',
-    'username': '',
-    'password': ''
+    'username': Username,
+    'password': Password
 }
 
 DEFAULT_VALUES = {
@@ -529,11 +530,6 @@ def create_specification_document(api, document,all_project_requirements, specif
     return
 
 def main(**kwargs):    
-    #VALISPACE['domain'] = input("Enter your Valispace's deployment [https://....]:  ")
-    #VALISPACE['username'] = input("Enter your username for Valispace's deployment:  ")
-    #VALISPACE['password'] = getpass.getpass("Enter your password for Valispace's deployment:  ")    
-    #DEFAULT_VALUES['project'] = input("Enter the project_ID to generate Specifications:  ")
-    #DEFAULT_VALUES['files_directory'] = input("Enter your Template File Path (example c:/templates/): ")
     api = API(
             url = VALISPACE.get('domain'),
             username = VALISPACE.get('username'),
@@ -557,7 +553,8 @@ def main(**kwargs):
     #all_project_files = get_map(api, f"files/?project="+str(DEFAULT_VALUES["project"]), "id", None, filter_not_images)
     #all_project_custom_fields = get_map(api, f"data/custom-fields/?project="+str(DEFAULT_VALUES["project"]), "id")
     #all_project_custom_field_options = get_map(api, f"data/custom-field-options/?project="+str(DEFAULT_VALUES["project"]), "id")
-    import_file = api.get("files/189/")
+    
+    import_file = api.get("files/FILE_ID/") #Replace FILE_ID for the id of the template file you have uploaded into deployment's Files Management
     readfile = BytesIO(requests.get(import_file['download_url']).content)
 
     for specification in all_project_specifications:
